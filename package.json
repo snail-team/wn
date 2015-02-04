@@ -1,0 +1,34 @@
+{
+  "name": "wn",
+  "version": "0.0.2",
+  "description": "wn",
+  "main": "index.js",
+  "bin": {
+    "wn": "bin/wn"
+  },
+  "preferGlobal": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fis",
+    "wn"
+  ],
+  "homepage":"https://github.com/snail-team/wn/",
+  "repository": {
+     "type": "git",
+     "url": "git@github.com:snail-team/wn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/snail-team/wn/issues"
+  },
+  "author": "snail-team <passtome@foxmail.com>",
+  "license": "BSD",
+  "dependencies": {
+    "fis": "^1.8.13",
+    "fis-parser-marked": "0.0.5",
+    "wn-parser-component": "0.0.1",
+    "wn-postprocessor-jswrapper": "0.0.1",
+    "wn-command-init": "0.0.1"
+  }
+}
