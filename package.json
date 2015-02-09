@@ -1,6 +1,6 @@
 {
   "name": "wn",
-  "version": "0.0.8",
+  "version": "0.0.14",
   "description": "wn",
   "main": "index.js",
   "bin": {
@@ -23,12 +23,13 @@
     "url": "https://github.com/snail-team/wn/issues"
   },
   "author": "snail-team <passtome@foxmail.com>",
-  "license": "BSD",
+  "license": "MIT",
   "dependencies": {
-    "fis": "^1.8.13",
-    "fis-parser-marked": "0.0.5",
-    "wn-parser-component": "0.0.1",
-    "wn-postprocessor-jswrapper": "0.0.1",
-    "wn-command-init": "0.0.3"
+       "fis": "^1.8.13",
+       "fis-parser-marked": "0.0.5",
+       "wn-parser-component": "0.0.1",
+       "wn-postprocessor-jswrapper": "0.0.1",
+       "wn-command-init": "0.0.3",
+       "spm":"3.3.4"
   }
 }

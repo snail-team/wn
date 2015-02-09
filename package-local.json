@@ -1,6 +1,6 @@
 {
   "name": "wn",
-  "version": "0.0.8",
+  "version": "0.0.13",
   "description": "wn",
   "main": "index.js",
   "bin": {
