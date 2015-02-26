@@ -286,7 +286,7 @@ var bulidWn = function(ret, conf, settings, opt){
             jsReg=new RegExp('index\.js|'+dir+'\.js','g');
             initReg=new RegExp('index\.init\.js|'+dir+'\.init\.js','g');
 
-            if(htmlReg.test(subpath)){
+            if(htmlReg.test(subpath)&&map.components[componentsAliasName].html==''){
                 map.components[componentsAliasName].html=file.id;
             }
             if(cssReg.test(subpath)&&map.components[componentsAliasName].css==''){
