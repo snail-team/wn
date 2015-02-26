@@ -15,7 +15,7 @@ $ npm install -g wn
 $ wn init
 ```
 根据提示选择相应的选项即可<br>
-1.用上下箭头选择游戏，默认指向《九阴真经》，如是新游戏或新项目没有被列出来，只需更新github/snail-team上，我们团队的wn-data仓库的snailGames.json即可。<br>
+1.用上下箭头选择游戏，默认指向《九阴真经》，如是新游戏或新项目没有被列出来，只需更新 http://github.com/snail-team 上，我们团队的wn-data仓库的snailGames.json即可。<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image008.jpg)<br>
 2.选择项目类型，目前只做了两个项目类型的模板，以后可以根据需要无限添加<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image010.jpg)<br>
@@ -111,6 +111,7 @@ wn releaes -d remote,qa,rd,output,preview,D:/work/output
 其实还有个install命令没有讲，这个命令可以先不去管它，因为我们是采用spm来管理包，所以所有的安装工作用spm命令即可，如 spm install jquery，后期我们会把wn install改造成默认安装spm.woniu.com的包，然后通过参数或者配置可以让它安装其他平台的资源, 这个功能很快就会实现。<br>
 
 对了，还有个fis-conf.js看起来很陌生的样子，这个文件是fis的配置文件，我们这次的wn工具就是在这个工具上进行的扩展和二次封装。FIS是专为解决前端开发中自动化工具、性能优化、模块化框架、开发规范、代码部署、开发流程等问题的工具框架。当然你可能会问，不是有很多现成的基于fis 解决方案吗，为什么不直接用现成的，的确，目前基于fis 的解决方案有很多，但是在经过对各种方案进行研究、比较后，发现没有一个现成的方案是可以满足我们公司特定需求和目前现状的，所以才在fis的基础上封装了现在的解决方案，wn。<br>
+<br>
 当然，最后得感谢fis团队对前端界做的无私贡献，还有各个前辈的无私思想分享，wn是一个站在巨人肩上开发出来的解决方案。由于时间仓促，wn是一个还不够完善的解决方案，使用过程难免会有还没考虑到的bug，如果遇到还请到https://github.com/snail-team/wn/issues
 留言，我们会及时改进，继续完善的，最后希望这个解决方案能给大家带来一点帮助，开创一条更和谐、友好的蜗牛前端开发之旅！<br>
 # 谢谢观看！
