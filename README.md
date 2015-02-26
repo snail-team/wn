@@ -67,7 +67,7 @@ release是一个非常强大的命令，它的主要任务就是进行代码的 
 ```bash
 wn release
 ```
-#### or
+or<br>
 ```bash
 wn release --dest preview
 ```
@@ -83,7 +83,7 @@ wn release -d ../output
 ```bash
 wn release -d /home/work/ouput
 ```
-#### win
+win<br>
 ```bash
 wn release -d d:/work/output
 ```
