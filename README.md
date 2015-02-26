@@ -45,7 +45,7 @@ $ wn init
 在模块里引用模块内部的css可以这样写：<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image027.jpg)<br>
 （模块内部引用css.jpg）<br>
-定义模块的js，比如menu.js，遵循commonjs规范，就像写nodejs一样（http://javascript.ruanyifeng.com/nodejs/commonjs.html）<br>
+定义模块的js，比如menu.js，遵循commonjs规范，就像写nodejs一样（ http://javascript.ruanyifeng.com/nodejs/commonjs.html ）<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image029.jpg)<br>
 在menu.init.js里调用menu.js，同样遵循commonjs规范，就像写nodejs一样<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image031.jpg)<br>
