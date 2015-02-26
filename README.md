@@ -30,28 +30,28 @@ $ wn init
 ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image016.jpg)<br>
  <br>
 到此项目初始化完毕，如果没有报任何错误，刚才的空目录应该出现了以下文件：<br>
- ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image018.jpg)<br>
+ ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image017.jpg)<br>
 看见这堆东西，估计你的第一反应是，目录这么复杂啊，哪有我原来的<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image020.jpg)<br>
 目录结构清晰啊，我一看就知道哪些文件该放哪里，的确，上面的这种目录结构，只要不瞎，都知道要把文件放哪。只是我们为什么要改变这样的目录结构呢，有一天小强接到了一个任务，PM让他把xxx官网的导航条改一下，需要换个圣诞节主题的导航条。于是小强找到该官网的index的目录，然后他开始在index.html里寻找原来导航条的结构，改完后，继续去css目录找index.css里面的导航条样式，如果还有导航条还有js还得去项目的一大堆js里去找导航条对应的代码，还得去找到images里对应的导航条图片，找了半天后才找到所有要改的地方，由于目录里文件太多，代码太分散，有些地方怕改错了，还只能先注释掉，或者图片先复制备份一个之类的， 然后该项目里的注释无用的代码越来越多，无用的图片也越来越多。而如果我们的目录结构是这样的呢：<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image022.jpg)<br>
 情况又会怎样。小强还是接到了刚才的任务，只是他去改导航条的时候，只需要在menu里改导航条的所有文件即可。这里的menu即是一个模块。什么是模块？我们把模块定义为一个由html、css、js、图片随机结合的文件目录。我们把模块的所有文件资源都放在一个目录里，且约定这样的模块定义规范：目录名就是该模块的名字，里面凡是和模块名同名的文件都默认为该模块的对应资源，比如menu里menu.css就是定义该menu模块的所有样式，menu.html就是定义了menu的所有结构，menu.js即定义了该模块的脚本代码，menu.init.js定义了该模块的初始化代码，图片就是该模块用到的图片。menuBtns.css是menu.css里的内部引用，这个用法下面具体会讲。也可用index定义该模块的所有资源，比如index.html、index.css、index.js、index.init.js他的调用优先级比组件名的文件更高。<br>
 然后通过里面的package.json去定义该模块的包信息，以便打包上传到包管理平台，一个包即一个模块。包管理平台目前有很多，比如npm（管理nodejs模块的），bower（google遵循component规范的包管理平台），spm（淘宝的以seajs为加载核心的静态资源包管理平台），我们这次就是采用的spm来管理所有的模块包，之所以采用spm是因为这个平台本身支持自己搭一个私服，并且配置也很方便，还有考虑到目前我们商城用的seajs加载，这样也算是一种兼容，以后商城的资源也都在这个平台，这样更好的整合了我们部门的资源，当然最重要的原因还是没时间去重新开发一个包管理平台了，但是现在的spm平台的展示方式，还不是我最初构想的样子，至少它应该有个模块缩略图的功能，这个功能在未来的不久就会完善上去。npm、bower、spm这些英文缩写看起来好像很陌生的样子，其实他们就是一个存放所有用户发布上去的包的网站而已，只是他们还得把这些包的必要信息展示出来，供大家检索。可能你会问，那我怎么使用我们定义的包呢，现在让我们看看刚才创建的项目文件的每个文件：<br>
- ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image024.jpg)<br>
-（项目文件解析图.jpg）
+ ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image023.jpg)<br>
+（项目文件解析图.jpg）<br>
 此外在样式里也可以用<!--load("xxx")-->调用模块，比如在static/index/index.css里<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image026.jpg)<br>
 这样会把0.0.1版本的base模块的css资源调到这里来。<br>
 在模块里引用模块内部的css可以这样写：<br>
- ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image028.jpg)<br>
-（模块内部引用css.jpg）
+ ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image027.jpg)<br>
+（模块内部引用css.jpg）<br>
 定义模块的js，比如menu.js，遵循commonjs规范，就像写nodejs一样（http://javascript.ruanyifeng.com/nodejs/commonjs.html）<br>
- ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image030.jpg)<br>
+ ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image029.jpg)<br>
 在menu.init.js里调用menu.js，同样遵循commonjs规范，就像写nodejs一样<br>
- ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image032.jpg)<br>
+ ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image031.jpg)<br>
 在static/index/index.js里，即index页面的入口文件里<br>
- ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image034.jpg)<br>
-（index.js.jpg）
+ ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image033.jpg)<br>
+（index.js.jpg）<br>
 到此你应该对wn的开发过程有个大体的了解了吧，其实说来说去就是在围绕一个模块化思想转，这也是目前比较先进、流行的思想。<br>
 ###发布
 下面来看看开发完项目后怎么预览呢？<br>
