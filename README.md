@@ -5,15 +5,15 @@ wn是一套针对目前蜗牛前端业务需求的集成解决方案。主要解决目前部门在前端开发过程中
 ###安装：
 安装nodejs，http://nodejs.org/和git，http://git-scm.com/download/
 ###打开命令行
-...bash
+```bash
 $ npm install -g wn
-...
+```
 <img src="file:///C:\Users\qiuyun\AppData\Local\Temp\msohtmlclip1\01\clip_image006.jpg" style="height:463px; width:524px" />
 ###创建项目：
 在一个空目录，右击选择git bash here，打开在该目录的命令行<br>
-...bash
+```bash
 $ wn init
-...
+```
 根据提示选择相应的选项即可<br>
 1.用上下箭头选择游戏，默认指向《九阴真经》，如是新游戏或新项目没有被列出来，只需更新github/snail-team上，我们团队的wn-data仓库的snailGames.json即可。<br>
  <img src="file:///C:\Users\qiuyun\AppData\Local\Temp\msohtmlclip1\01\clip_image008.jpg" style="height:201px; width:554px" />
@@ -64,33 +64,33 @@ release是一个非常强大的命令，它的主要任务就是进行代码的 编译 与 部署，它的参数囊
 添加 --live 或 -L 参数（注意大写），支持编译后自动刷新浏览器。Liveload功能需要浏览器支持Web Socket功能，例如Chrome、Firefox、Safari等浏览器。<br>
 添加 --dest [path|name] 或 -d 参数，来指定编译后的代码部署路径，支持发布到 本地目录、本地调试服务器目录、远程机器目录(需要配置)，它与--watch参数配合使用，可以让你的代码保存就上传！而且--dest值支持逗号分隔，这也就意味着，你 一次编译可以同时发布到本地以及多台远程机器上！举几个栗子：<br>
 发布到wn server open目录下用于本地调试<br>
-...bash
+```bash
 wn release
-...
+```
 #### or
-...bash
+```bash
 wn release --dest preview
-...
+```
 发布到项目根目录的output目录下， 注意，这里的output其实是一个内置的部署配置名，而不是一个目录名。<br>
-...bash
+```bash
 wn release -d output
-...
+```
 发布到相对 工作目录 的路径<br>
-...bash
+```bash
 wn release -d ../output
-...
+```
 发布到绝对路径<br>
-...bash
+```bash
 wn release -d /home/work/ouput
-...
+```
 #### win
-...bash
+```bash
 wn release -d d:/work/output
-...
+```
 使用配置文件的 deploy节点配置 进行发布，此配置可将代码上传至远端<br>
-...bash
+```bash
 wn release -d remote
-...
+```
 以上所有发布规则任意组合使用（一次编译同时上传到多台远端机器 & 项目根目录下的output & 调试服务器根目录 & 本地绝对路径）<br>
 wn releaes -d remote,qa,rd,output,preview,D:/work/output
 添加 --md5 [level] 或 -m [level] 参数，在编译的时候可以对文件自动加md5戳，从此告别在静态资源url后面写?version=xxx的时代<br>
