@@ -101,16 +101,17 @@ wn releaes -d remote,qa,rd,output,preview,D:/work/output
 添加 --domains 或 -D 参数，为资源添加domain域名<br>
 参数可以随意组合，没有顺序限制，比如：wn release -wLc 代表发布时文件监听，自动刷新，清楚缓存。值得一提的是，那个pack命令我们现在基本用不到，因为这次wn采用的是自动打包，同步加载模块的方式，所以暂时用不到那个pack参数，md5参数也暂时先不用，这个功能还需进一步测试，和规划，dest的远程部署，也暂时还没开放，还需要进一步的测试和规划。<br>
 ###预览
-当然编译后，还需要启动个服务器去查看，可以使用wn server start，启动一个本地服务器，服务器启动之后，它会自动检查环境，最后告诉你它监听了8080端口，这个时候，你的浏览器应该打开了一个调试服务器根目录的浏览页面，地址是http://localhost:8080/。并且该服务器支持php等后端语言。<br>
+当然编译后，还需要启动个服务器去查看，可以使用wn server start，启动一个本地服务器，服务器启动之后，它会自动检查环境，最后告诉你它监听了8080端口，这个时候，你的浏览器应该打开了一个调试服务器根目录的浏览页面，地址是http://localhost:8080/ 。并且该服务器支持php等后端语言。<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image038.jpg)<br>
 用wn server open可以打开服务器的根目录<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image040.jpg)<br>
 如果需要关闭服务器则用$ wn server stop即可，如果想要删除服务器那个目录，就必须先关闭服务器，不然服务器的进程会一直占用里面的server.log文件，以至于提示无法删除目录。<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image042.jpg)<br>
-上面这段关于release、server命令的详细介绍是我从fis官网的拷贝，为了不产生误解，我把fis替换成了wn，因为我们这个工具是用wn命令调用的，也可去fis官网查看命令行的具体用法http://fis.baidu.com/docs/api/cli.html#。<br>
+上面这段关于release、server命令的详细介绍是我从fis官网的拷贝，为了不产生误解，我把fis替换成了wn，因为我们这个工具是用wn命令调用的，也可去fis官网查看命令行的具体用法http://fis.baidu.com/docs/api/cli.html# 。<br>
 其实还有个install命令没有讲，这个命令可以先不去管它，因为我们是采用spm来管理包，所以所有的安装工作用spm命令即可，如 spm install jquery，后期我们会把wn install改造成默认安装spm.woniu.com的包，然后通过参数或者配置可以让它安装其他平台的资源, 这个功能很快就会实现。<br>
 
 对了，还有个fis-conf.js看起来很陌生的样子，这个文件是fis的配置文件，我们这次的wn工具就是在这个工具上进行的扩展和二次封装。FIS是专为解决前端开发中自动化工具、性能优化、模块化框架、开发规范、代码部署、开发流程等问题的工具框架。当然你可能会问，不是有很多现成的基于fis 解决方案吗，为什么不直接用现成的，的确，目前基于fis 的解决方案有很多，但是在经过对各种方案进行研究、比较后，发现没有一个现成的方案是可以满足我们公司特定需求和目前现状的，所以才在fis的基础上封装了现在的解决方案，wn。<br>
-当然，最后得感谢fis团队对前端界做的无私贡献，还有各个前辈的无私思想分享，wn是一个站在巨人肩上开发出来的解决方案。由于时间仓促，wn是一个还不够完善的解决方案，使用过程难免会有还没考虑到的bug，如果遇到还请到https://github.com/snail-team/wn/issues留言，我们会及时改进，继续完善的，最后希望这个解决方案能给大家带来一点帮助，开创一条更和谐、友好的蜗牛前端开发之旅！<br>
+当然，最后得感谢fis团队对前端界做的无私贡献，还有各个前辈的无私思想分享，wn是一个站在巨人肩上开发出来的解决方案。由于时间仓促，wn是一个还不够完善的解决方案，使用过程难免会有还没考虑到的bug，如果遇到还请到https://github.com/snail-team/wn/issues
+留言，我们会及时改进，继续完善的，最后希望这个解决方案能给大家带来一点帮助，开创一条更和谐、友好的蜗牛前端开发之旅！<br>
 # 谢谢观看！
 
