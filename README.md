@@ -29,7 +29,7 @@ $ wn init
 空格连接多个模块。<br>
 ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image016.jpg)<br>
  <br>
-到此项目初始化完毕，如果没有报任何错误，刚才的空目录应该出现了以下文件：<br>
+到此项目初始化完毕，如果没有报任何错误，刚才的空目录应该出现了以下文件（如果是外网环境，spm.woniu.com不能访问，改用spmjs.io访问即可，两个网站是一样的）：<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image017.jpg)<br>
 看见这堆东西，估计你的第一反应是，目录这么复杂啊，哪有我原来的<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image020.jpg)<br>
