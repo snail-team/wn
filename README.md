@@ -108,7 +108,7 @@ wn releaes -d remote,qa,rd,output,preview,D:/work/output
 如果需要关闭服务器则用$ wn server stop即可，如果想要删除服务器那个目录，就必须先关闭服务器，不然服务器的进程会一直占用里面的server.log文件，以至于提示无法删除目录。<br>
  ![](https://raw.githubusercontent.com/senro/wn-doc/master/images/wn/clip_image042.jpg)<br>
 上面这段关于release、server命令的详细介绍是我从fis官网的拷贝，为了不产生误解，我把fis替换成了wn，因为我们这个工具是用wn命令调用的，也可去fis官网查看命令行的具体用法http://fis.baidu.com/docs/api/cli.html# 。<br>
-其实还有个install命令没有讲，这个命令可以先不去管它，因为我们是采用[spm](https://spmjs.io) 来管理包，所以所有的安装工作用spm命令即可，如 spm install jquery，后期我们会把wn install改造成默认安装spm.woniu.com的包，然后通过参数或者配置可以让它安装其他平台的资源, 这个功能很快就会实现。<br>
+其实还有个install命令没有讲，这个命令可以先不去管它，因为我们是采用[spm](https://spmjs.io) 来管理包，所以所有的安装工作用spm命令即可，如 spm install jquery，后期我们会把wn install改造成默认安装spm.woniu.com(需要蜗牛内网环境)的包，然后通过参数或者配置可以让它安装其他平台的资源, 这个功能很快就会实现。<br>
 
 对了，还有个fis-conf.js看起来很陌生的样子，这个文件是fis的配置文件，我们这次的wn工具就是在这个工具上进行的扩展和二次封装。FIS是专为解决前端开发中自动化工具、性能优化、模块化框架、开发规范、代码部署、开发流程等问题的工具框架。当然你可能会问，不是有很多现成的基于fis 解决方案吗，为什么不直接用现成的，的确，目前基于fis 的解决方案有很多，但是在经过对各种方案进行研究、比较后，发现没有一个现成的方案是可以满足我们公司特定需求和目前现状的，所以才在fis的基础上封装了现在的解决方案，wn。<br>
 <br>
