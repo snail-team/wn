@@ -1,6 +1,6 @@
 {
   "name": "wn",
-  "version": "0.0.18",
+  "version": "0.0.20",
   "description": "wn",
   "main": "index.js",
   "bin": {
@@ -30,6 +30,7 @@
        "wn-parser-component": "0.0.1",
        "wn-postprocessor-jswrapper": "0.0.1",
        "wn-command-init": "0.0.3",
+       "wn-command-install":"0.0.1",
        "spm":"3.3.4"
   }
 }
