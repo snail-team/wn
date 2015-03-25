@@ -126,27 +126,32 @@ var bulidWn = function(ret, conf, settings, opt){
      "component/b@1.0.0": "component_modules/b/1.0.0/"
      }
      */
+    var ignoreReg=new RegExp('^(\/|)(components|spm_modules)\/[^\/]*\/([0-9]*\.[0-9]*\.[0-9]*\/|)(_site\/|spm_modules\/)','g');
     fis.util.map(ret.src, function(subpath, file){
         //添加判断，只有components和spm_modules目录下的文件才需要建立依赖树或别名
         if(file.isComponents || file.isSpmModules ){
-            //判断一下文件名和文件夹是否同名,包括有版本号的情况，如果同名则建立一个别名
-            //var match = subpath.match(/^\/components\/(.*?([^\/]+))\/\2\.js$/i);
-            var componentsAliasName=getComponentsAliasName(subpath);
 
-            //初始化componentsAliasMap
-            if(componentsAliasName && !map.componentsAlias.hasOwnProperty(componentsAliasName)){
-                map.componentsAlias[componentsAliasName] = componentsAliasName.replace(/@/g,'/')+'/';
-                //初始化组件对象，其中只有js是数组类型，html、css因为可以用fis的文件内嵌__inline合并成一个文件
-                //所以也不需要数组，init不可能有多个也不需要数组,先暂定为数组 todo
-                map.components[componentsAliasName]={html:'',css:'',js:[],init:''};
-            }
-            //初始化depsMap
-            if(file.requires && file.requires.length){
-                map.deps[file.id] = file.requires;
-            }
+            if(!/^(\/|)(components|spm_modules)\/[^\/]*\/([0-9]*\.[0-9]*\.[0-9]*\/|)(_site\/|spm_modules\/)/g.test(subpath)){//排除组件里的_site和spm_modules目录路径，这里有个诡异问题 todo，如果用ignoreReg去判断，第一个if有用，第二个if就没用，不用变量的形式都没问题，目前只能这样先解决再说吧
+                //console.log(subpath);
+                //判断一下文件名和文件夹是否同名,包括有版本号的情况，如果同名则建立一个别名
+                //var match = subpath.match(/^\/components\/(.*?([^\/]+))\/\2\.js$/i);
+                var componentsAliasName=getComponentsAliasName(subpath);
 
+                //初始化componentsAliasMap
+                if(componentsAliasName && !map.componentsAlias.hasOwnProperty(componentsAliasName)){
+                    map.componentsAlias[componentsAliasName] = componentsAliasName.replace(/@/g,'/')+'/';
+                    //初始化组件对象，其中只有js是数组类型，html、css因为可以用fis的文件内嵌__inline合并成一个文件
+                    //所以也不需要数组，init不可能有多个也不需要数组,先暂定为数组 todo
+                    map.components[componentsAliasName]={html:'',css:'',js:[],init:''};
+                }
+                //初始化depsMap
+                if(file.requires && file.requires.length){
+                    map.deps[file.id] = file.requires;
+                }
+            }
         }
     });
+    //console.log(map);
     /*
      * 2.建立一个组件结构表componentsMap对象，目前默认安装的是spm组件，所以默认spm_modules里的组件就根据组件里的package.json去分析资源
      * spm包默认的功能定义是提供某个单一的功能，比如一个特定功能的js，一段特定的css（spm.main 	the only entry point of the package,
@@ -214,9 +219,11 @@ var bulidWn = function(ret, conf, settings, opt){
         //添加判断，只有components和spm_modules目录下的文件才需要解析
         if(file.isComponents || file.isSpmModules ){
 
-            if(/package\.json/g.test(subpath)){
+            if(!/^(\/|)(components|spm_modules)\/[^\/]*\/([0-9]*\.[0-9]*\.[0-9]*\/|)(_site\/|spm_modules\/)/g.test(subpath)&&/package\.json/g.test(subpath)){//排除组件里的_site和spm_modules目录路径后的package.json
+                //console.log(subpath);
                 var dir,fileName,version,packageJson,packageJsonMain,componentsAliasName,componentsDir;
-                if(/[0-9]*\.[0-9]*\.[0-9]*/g.test(subpath)){
+
+                if(/^(\/|)(components|spm_modules)\/[^\/]*\/[0-9]*\.[0-9]*\.[0-9]*\//g.test(subpath)){
                     //有版本号
                     //默认组件目录名为components、spm_modules，如果有修改，则需修改此处，todo
                     dir=subpath.replace(/^(\/|)(components|spm_modules)\//g,'').split('\/')[0];
@@ -226,7 +233,6 @@ var bulidWn = function(ret, conf, settings, opt){
                     componentsDir=parsePath(subpath).rDir;
                     packageJson=JSON.parse(file._content);
                     packageJsonMain=packageJson.spm.main;
-
                     if(packageJsonMain){
                         if(/\.js/g.test(packageJsonMain)){
                             //console.log('have main js!:'+componentsDir+packageJsonMain);
@@ -264,48 +270,51 @@ var bulidWn = function(ret, conf, settings, opt){
      * 说明它的spm.main不是js文件，把index.js或组件名.js加入到js属性里，最后再去寻找该组件入口js的内部本地依赖，如果有则
      * 加入到组件的js属性里。
      * */
+
+    //console.log(stringObj(map));
     fis.util.map(ret.src, function(subpath, file){
         //添加判断，只有components和spm_modules目录下的文件才需要解析
         if(file.isComponents || file.isSpmModules ){
+            if(!/^(\/|)(components|spm_modules)\/[^\/]*\/([0-9]*\.[0-9]*\.[0-9]*\/|)(_site\/|spm_modules\/)/g.test(subpath)){//排除组件里的_site和spm_modules目录路径
+                var dir,version,componentsAliasName,htmlReg,cssReg,jsReg,initReg;
 
-            var dir,version,componentsAliasName,htmlReg,cssReg,jsReg,initReg;
+                if(/^(\/|)(components|spm_modules)\/[^\/]*\/[0-9]*\.[0-9]*\.[0-9]*\//g.test(subpath)){
+                    //有版本号
+                    //默认组件目录名为components、spm_modules，如果有修改，则需修改此处，todo
+                    dir=subpath.replace(/^(\/|)(components|spm_modules)\//g,'').split('\/')[0];
+                    version=subpath.replace(/^(\/|)(components|spm_modules)\//g,'').split('\/')[1];
+                    componentsAliasName=dir+'@'+version;
+                }else{
+                    //没有版本号
+                    dir=subpath.replace(/^(\/|)(components|spm_modules)\//g,'').split('\/')[0];
+                    componentsAliasName=dir;
+                }
+                htmlReg=new RegExp('index\.html|'+dir+'\.html','g');
+                cssReg=new RegExp('index\.css|'+dir+'\.css','g');
+                jsReg=new RegExp('index\.js|'+dir+'\.js','g');
+                initReg=new RegExp('index\.init\.js|'+dir+'\.init\.js','g');
 
-            if(/[0-9]*\.[0-9]*\.[0-9]*/g.test(subpath)){
-                //有版本号
-                //默认组件目录名为components、spm_modules，如果有修改，则需修改此处，todo
-                dir=subpath.replace(/^(\/|)(components|spm_modules)\//g,'').split('\/')[0];
-                version=subpath.replace(/^(\/|)(components|spm_modules)\//g,'').split('\/')[1];
-                componentsAliasName=dir+'@'+version;
-            }else{
-                //没有版本号
-                dir=subpath.replace(/^(\/|)(components|spm_modules)\//g,'').split('\/')[0];
-                componentsAliasName=dir;
-            }
-            htmlReg=new RegExp('index\.html|'+dir+'\.html','g');
-            cssReg=new RegExp('index\.css|'+dir+'\.css','g');
-            jsReg=new RegExp('index\.js|'+dir+'\.js','g');
-            initReg=new RegExp('index\.init\.js|'+dir+'\.init\.js','g');
-
-            if(htmlReg.test(subpath)&&map.components[componentsAliasName].html==''){
-                map.components[componentsAliasName].html=file.id;
-            }
-            if(cssReg.test(subpath)&&map.components[componentsAliasName].css==''){
-                map.components[componentsAliasName].css=file.id;
-            }
-            if(jsReg.test(subpath)&&map.components[componentsAliasName].js.length==0){
-                map.components[componentsAliasName].js.push(file.id);
-            }
-            if(initReg.test(subpath)&&map.components[componentsAliasName].init==''){
-                map.components[componentsAliasName].init=file.id;
-            }
-            //寻找该组件的内部js依赖，并保存在它的js数组中
-            for(var i=0;i<map.components[componentsAliasName].js.length;i++){
-                var currComponentJs=map.components[componentsAliasName].js[i];
-                map.components[componentsAliasName].js= map.components[componentsAliasName].js.concat(findJsDeps(currComponentJs));
+                if(htmlReg.test(subpath)&&map.components[componentsAliasName].html==''){
+                    map.components[componentsAliasName].html=file.id;
+                }
+                if(cssReg.test(subpath)&&map.components[componentsAliasName].css==''){
+                    map.components[componentsAliasName].css=file.id;
+                }
+                if(jsReg.test(subpath)&&map.components[componentsAliasName].js.length==0){
+                    map.components[componentsAliasName].js.push(file.id);
+                }
+                if(initReg.test(subpath)&&map.components[componentsAliasName].init==''){
+                    map.components[componentsAliasName].init=file.id;
+                }
+                //寻找该组件的内部js依赖，并保存在它的js数组中
+                for(var i=0;i<map.components[componentsAliasName].js.length;i++){
+                    var currComponentJs=map.components[componentsAliasName].js[i];
+                    map.components[componentsAliasName].js= map.components[componentsAliasName].js.concat(findJsDeps(currComponentJs));
+                }
             }
         }
     });
-
+    //console.log(stringObj(map));
 
     function getComponentsAliasName(path){
         //'/components/menu/0.0.0/menu.js';yes
@@ -318,14 +327,14 @@ var bulidWn = function(ret, conf, settings, opt){
          * 有版本号,说明是spm_modules里的组件，返回【目录名@version】，目录名即组件名
          * 没有版本号，是本地组件，返回【目录名】
          * */
-        var dir,fileName,version;
-        if(/[0-9]*\.[0-9]*\.[0-9]*/g.test(path)){
+        var dir,version;
+        if(/^(\/|)(components|spm_modules)\/[^\/]*\/[0-9]*\.[0-9]*\.[0-9]*\//g.test(path)){
             //有版本号,说明是spm_modules里的组件，返回【目录名@version】，目录名即组件名
             //默认组件目录名为components、spm_modules，如果有修改，则需修改此处，todo
             dir=path.replace(/^(\/|)(components|spm_modules)\//g,'').split('\/')[0];
             version=path.replace(/^(\/|)(components|spm_modules)\//g,'').split('\/')[1];
-            //fileName=path.replace(/^(\/|)(components|spm_modules)\//g,'').split('\/')[2].split('.')[0];
             return dir+'@'+version;
+            //fileName=path.replace(/^(\/|)(components|spm_modules)\//g,'').split('\/')[2].split('.')[0];
         }else{
             //没有版本号，本地组件，返回【目录名】
             dir=path.replace(/^(\/|)(components|spm_modules)\//g,'').split('\/')[0];
@@ -366,18 +375,24 @@ var bulidWn = function(ret, conf, settings, opt){
             for(var i=0;i<map.templateDeps[file.id].deps.length;i++){
                 map.templateDeps[file.id].deps=map.templateDeps[file.id].deps.concat(findDeps(map.templateDeps[file.id].deps[i]));
             }
-            if(file.mainJs){
+            if(file.mainJs&&file.mainJs!='self'){
                 map.templateDeps[file.id].mainJs=file.mainJs;
                 //寻找mainjs里的依赖
                 for(var i=0;i<ret.src[file.mainJs].requires.length;i++){
                     map.templateDeps[file.id].deps.push(ret.src[file.mainJs].requires[i]);
                     map.templateDeps[file.id].deps=map.templateDeps[file.id].deps.concat(findDeps(ret.src[file.mainJs].requires[i]));
                 }
+            }else{
+                map.templateDeps[file.id].mainJs='/'+file.id;
+                //寻找mainjs里的依赖
+                for(var i=0;i<file.requires.length;i++){
+                    map.templateDeps[file.id].deps.push(file.requires[i]);
+                    map.templateDeps[file.id].deps=map.templateDeps[file.id].deps.concat(findDeps(file.requires[i]));
+                }
             }
             map.templateDeps[file.id].deps=delUseless(map.templateDeps[file.id].deps);
         }
     });
-
     /*
      * 5. 建立一个需打包的文件表pkgMap对象，记录每个tpl模板用到的组件的打包文件路径。
      * /
@@ -412,6 +427,18 @@ var bulidWn = function(ret, conf, settings, opt){
             }
             if(map.components[componentAliasName].init){
                 map.templateDeps[templateName].init=map.templateDeps[templateName].init.concat(map.components[componentAliasName].init);
+                var initJsDeps=findDeps(map.components[componentAliasName].init);
+                if(initJsDeps&&initJsDeps.length>0){
+                    for(var j=0;j<initJsDeps.length;j++){
+                        if(/\.js/g.test(initJsDeps[j])){
+                            map.templateDeps[templateName].js.push(initJsDeps[j]);
+                        }else if(map.alias[initJsDeps[j]]){
+                            map.templateDeps[templateName].js.push(map.alias[initJsDeps[j]]);
+                        }
+                    }
+                }
+                map.templateDeps[templateName].js=map.templateDeps[templateName].js.distinct();
+                //map.templateDeps[templateName].js=map.templateDeps[templateName].js.concat(findDeps(map.components[componentAliasName].init));
             }
         }
     }
@@ -466,8 +493,14 @@ var bulidWn = function(ret, conf, settings, opt){
         }
         if(templateFileObj.ext=='.html'){
             //只替换后缀是.tpl文件的__COMPONENTS_CSS__、__COMPONENTS_JS__、__COMPONENTS_INIT__、__COMPONENTS_ALIAS__为各自的引用和代码
-            templateFileObj._content=templateFileObj._content.replace(/__COMPONENTS_CSS__/g,'<link rel="stylesheet" type="text/css" href="'+template.pkg.css.path+'"/>');
-            templateFileObj._content=templateFileObj._content.replace(/__COMPONENTS_JS__/g,'<script type="text/javascript" src="'+template.pkg.js.path+'"></script>');
+            if(fis.config.get('labelCompileInline')){
+                templateFileObj._content=templateFileObj._content.replace(/__COMPONENTS_CSS__/g, wrapStrHtmlLabel(getFilesContents(template.css,[translateCssRelativePathToAbsolute]),'css'));
+                templateFileObj._content=templateFileObj._content.replace(/__COMPONENTS_JS__/g, wrapStrHtmlLabel(getFilesContents(template.js),'js'));
+            }else{
+                templateFileObj._content=templateFileObj._content.replace(/__COMPONENTS_CSS__/g,'<link rel="stylesheet" type="text/css" href="'+template.pkg.css.path+'"/>');
+                templateFileObj._content=templateFileObj._content.replace(/__COMPONENTS_JS__/g,'<script type="text/javascript" src="'+template.pkg.js.path+'"></script>');
+            }
+
             if(template.mainJs){
                 if(template.mainJs!='self'){
                     ret.src[template.mainJs]._content=ret.src[template.mainJs]._content.replace(/__COMPONENTS_INIT__/g,getFilesContents(template.init));
@@ -723,7 +756,7 @@ var bulidWn = function(ret, conf, settings, opt){
 //    var retStr = stringObj(ret);
 //    var confStr = stringObj(conf);
 //    var settingsStr = stringObj(settings);
-
+//
 //    fis.util.write(fis.project.getProjectPath()+'/test/retStr.txt', retStr);
 //    fis.util.write(fis.project.getProjectPath()+'/test/confStr.txt', confStr);
 //    fis.util.write(fis.project.getProjectPath()+'/test/settingsStr.txt', settingsStr);

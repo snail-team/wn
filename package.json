@@ -1,6 +1,6 @@
 {
   "name": "wn",
-  "version": "0.0.20",
+  "version": "0.0.26",
   "description": "wn",
   "main": "index.js",
   "bin": {
@@ -25,12 +25,13 @@
   "author": "snail-team <passtome@foxmail.com>",
   "license": "MIT",
   "dependencies": {
-       "fis": "^1.8.13",
+       "fis": ">=1.8.13",
        "fis-parser-marked": "0.0.5",
-       "wn-parser-component": "0.0.1",
+       "wn-parser-component": "0.0.2",
        "wn-postprocessor-jswrapper": "0.0.1",
        "wn-command-init": "0.0.3",
-       "wn-command-install":"0.0.1",
-       "spm":"3.3.4"
+       "wn-command-install":"0.0.3",
+       "wn-command-publish":"0.0.5",
+       "spm":">=3.3.4"
   }
 }
