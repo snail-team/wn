@@ -426,6 +426,7 @@ var bulidWn = function(ret, conf, settings, opt){
                 map.templateDeps[templateName].js=map.templateDeps[templateName].js.concat(map.components[componentAliasName].js);
             }
             if(map.components[componentAliasName].init){
+                //分析模板initjs的模块依赖，并加入到模板templateDeps数组的js属性里，以解决自身模块没有主js，只有引用模块的情况也能被正常识别
                 map.templateDeps[templateName].init=map.templateDeps[templateName].init.concat(map.components[componentAliasName].init);
                 var initJsDeps=findDeps(map.components[componentAliasName].init);
                 if(initJsDeps&&initJsDeps.length>0){
